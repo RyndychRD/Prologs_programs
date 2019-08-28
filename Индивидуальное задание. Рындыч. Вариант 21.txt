@@ -1,0 +1,82 @@
+%Использую стандартные представления для списков, запрограммировать на Прологе следующие предикаты работы со списками. Каждый предикат должен вычислять сложность для самого себя
+
+
+%1. Вычислить разность четных элементов списка
+	dif_list([], 0,1):-!.
+	dif_list([Head], 0,1):-!.
+
+	dif_list([Head|[HeadCH|Tail]], Dif,N):-
+    		dif_list(Tail, TailDif,Next),
+    		N is Next+1,
+    		Dif is  HeadCH - TailDif.
+		
+%init dif_list([1,2,3,4],Dif,N)
+
+%2. Исключить из списка все положительные элементы
+
+deletePositiv([],[]).
+deletePositiv([Head|Tail],[Head|Tail2]):-
+    Head<0, deletePositiv(Tail,Tail2).
+deletePositiv([Head|Tail],Out):-
+    Head>0,deletePositiv(Tail,Out).
+deletePositiv([Head|Tail],[Head|Tail2]):-
+    Head=0, deletePositiv(Tail,Tail2).
+
+%init deletePositiv([5,1,0,-1,1,2,-3],List).
+
+%3. Вычисление длины полученного списка
+
+deletePositiv([],[]).
+deletePositiv([Head|Tail],[Head|Tail2]):-
+    Head<0, deletePositiv(Tail,Tail2).
+deletePositiv([Head|Tail],Out):-
+    Head>0,deletePositiv(Tail,Out).
+deletePositiv([Head|Tail],[Head|Tail2]):-
+    Head=0, deletePositiv(Tail,Tail2).
+
+length1(List, Length):-
+    length1(List, 0, Length).
+length1([], Length, Length):-!.
+length1([_Head|Tail], Buffer, Length):-
+    NewBuffer is Buffer + 1,
+    length(Tail, NewBuffer, Length).
+
+%init deletePositiv([5,1,0,-1,1,2,-3],List), length(List,L).
+
+%4. Вычисление минимального среди тех элементов полученного списка, которые больше заданного числа
+
+deleteLes([],[],Num).
+deleteLes([Head|Tail],[Head|Tail2],Num):-
+    Head>Num, deleteLes(Tail,Tail2,Num).
+deleteLes([Head|Tail],Out,Num):-
+    Head<Num,deleteLes(Tail,Out,Num).
+deleteLes([Head|Tail],[Head|Tail2],Num):-
+    Head=Num, deleteLes(Tail,Tail2,Num).
+
+min1([X],X):- !.
+min1([H|T],N):-min1(T,N),N =< H.
+min1([H|T],H) :-min1(T,N),N > H.
+
+%init deleteLes([5,1,0,-1,1,2,-3],List,1), min1(List,N)
+
+%5. Вычисление произведения нечетных элементов списка
+
+	dif_list([], 1, 1).
+	dif_list([Head], Head,1).
+
+	dif_list([Head|[HeadCH|Tail]], Dif,M):-
+    		dif_list(Tail, TailDif,Next),
+    		M is Next+1,
+    		Dif is  Head * TailDif.
+
+%init dif_list([1,2,3,4,5,6,7,8],Dif,N).
+
+%6. Сортировка элементов списка произведений по убыванию
+
+buble(List,SortedList):-replace(List,List1),!,buble(List1,SortedList).
+buble(SortedList,SortedList).
+
+replace([X,Y|Remain],[Y,X|Remain]):- X<Y.
+replace([Z|Remain],[Z|Remain1]):- replace(Remain,Remain1).
+
+%init buble([0,-1,5,8,3],List).
